@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //use
-const Counter = ({ stock, onAdd }) => {
-    const [count, setCount] = useState(0);
+const Counter = ({ stock, onAdd, initial = 1 }) => {
+    const [count, setCount] = useState(initial);
+
+    useEffect(() => {
+        setCount(initial);
+    }, [initial]);
 
     const sumar = () => {
-         setCount(count + 1);
+        count < stock && setCount(count + 1);
     };
 
     const restar = () => {
-        setCount(count>0?count - 1:count)  ;
+       count>0? setCount(count - 1):setCount(count);
     };
 
+    const agregarAlCarrito = () => {
+        onAdd(count);
+    };
     return (
         <div>
             <button onClick={sumar}>+</button>
             <button onClick={restar}>-</button>
             <p>Count: {count} </p>
-            <button /* disabled={count === 0} */>Agregar al carrito</button>
+            <button onClick={agregarAlCarrito}>Agregar al carrito</button>
         </div>
     );
 };

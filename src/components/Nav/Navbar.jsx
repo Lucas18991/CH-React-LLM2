@@ -20,9 +20,13 @@ const Navbar = (props) => {
                     <Link  to="/category/Desodorantes">Desodorantes</Link>
                     </li>
                 </ul>
+                
                 <Link to="/cart">
+               
+                   
+                   
                     <CartWidget />
-                    <Counter />
+                    
                 </Link>
             </nav>
         );
