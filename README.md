@@ -12,7 +12,7 @@
 
 ### Pasos para levantar el proyecto localmente
 
-`git clone https://github.com/Lucas18991/LLMReact.git `
+`git clone https://github.com/Lucas18991/CH-React-LLM2.git `
 
 `npm install`
 `npm install react-spinners`
