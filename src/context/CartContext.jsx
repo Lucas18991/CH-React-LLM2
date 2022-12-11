@@ -1,14 +1,15 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { createContext, useState } from 'react';
 
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
+    const [unidades, setUnidades] = useState(0);
 
     const addToCart = (item, cantidad) => {
         if (isInCart(item.id)) {
-            //lo encuentro y le sumo la cantidad
             totalQuantitySingleProduct(item, cantidad);
         } else {
             setCart([...cart, { ...item, cantidad }]);
@@ -59,8 +60,6 @@ const CartProvider = ({ children }) => {
 
     //eliminar un solo producto pasandole el id
     const deleteOne = (id) => {
-        //const copia = [...cart] ✅
-
         const filteredProducts = cart.filter((prod) => prod.id !== id);
         setCart(filteredProducts);
     };
@@ -75,11 +74,16 @@ const CartProvider = ({ children }) => {
         return product?.cantidad;
     
     };
+    useEffect(() => {
+        totalQuantity();
+        // eslint-disable-next-line
+    }, [cart]);
 
     return (
         <CartContext.Provider
             value={{
                 cart,
+                unidades,
                 addToCart,
                 clearCart,
                 deleteOne,
@@ -92,6 +96,5 @@ const CartProvider = ({ children }) => {
         </CartContext.Provider>
     );
 };
-
 export default CartProvider;
 

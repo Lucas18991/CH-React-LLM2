@@ -1,4 +1,12 @@
 .footer {
   background-color: rgb(154, 180, 219);
   padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav {
+  background-color: rgb(154, 180, 219);
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
 }

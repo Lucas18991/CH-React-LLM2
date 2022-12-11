@@ -1,56 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CartWidget from './CartWidget';
 import estilos from './navbar.module.css';
 import { Link, NavLink } from 'react-router-dom';
-import Counter from '../Counter/Counter';
+import { useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../FirebaseConfig';
 
-const Navbar = (props) => {
-    //console.log(props);
-    //const condicion = true;
-    if (props.isFooter) {
+
+    const Navbar = (props) => {
+        const [categories, setCategories] = useState([]);
+    
+        useEffect(() => {
+            const collectionCat = collection(db, 'categorias');
+    
+            getDocs(collectionCat).then((res) => {
+                const categorias = res.docs.map((cat) => {
+                    return {
+                        id: cat.id,
+                        ...cat.data(),
+                    };
+                });
+                setCategories(categorias);
+            });
+        }, []);
         return (
-            <nav className={estilos.nav}>
+            <nav className={props.isFooter ? estilos.nav : estilos.footer}>
+                
                 <Link to="/">Home</Link>
                 <ul>
-                    <li>
-                    <NavLink  to="/category/Perfumes">Perfumes</NavLink>
-                    </li><li>
-                    <Link  to="/category/Medicamentos">Medicamentos</Link>
-                    </li><li>
-                    <Link  to="/category/Desodorantes">Desodorantes</Link>
-                    </li>
+                    {props.isFooter ? (
+                        <ul>
+                            {categories.map((cat) => (
+                                <li><NavLink key={cat.id} to={`/category/${cat.route}`}>
+                                    {cat.name}
+                                </NavLink>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <a href="https://google.com">GOOGLE</a>
+                    )}
                 </ul>
-                
                 <Link to="/cart">
-               
-                   
-                   
                     <CartWidget />
-                    
                 </Link>
             </nav>
         );
-    } else {
-        return (
-            <nav className={estilos.nav}>
-                <Link to="/">Home</Link>
-                <ul>
-                    <li>
-                        <a  href="https://google.com">Productos</a>
-                    </li>
-                    <li>
-                        <a  href="https://google.com">Nosotros</a>
-                    </li>
-                    <li>
-                        <a  href="https://google.com">Contacto</a>
-                    </li>
-                    <li>
-                        <a  href="https://google.com">Facebook</a>
-                    </li>
-                </ul>
-            </nav>
-        );
-    }
-};
+    };
 
-export default Navbar;
+    export default Navbar;
